@@ -11,7 +11,7 @@ It also provides some basis analysis of your project like file sizes, file types
 
 ![Analysis Image](https://dl.dropboxusercontent.com/s/3m207prytlr0dwy/Screenshot%20from%202016-10-13%2000-57-44.png?dl=0)
 
-This is my first (hello-world) @godotengine Plugin.
+This is my first (hello-world) [@godotengine](http://www.godotengine.org) Plugin.
 Feel free to tell me how to make it more useful..
 
 
