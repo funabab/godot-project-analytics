@@ -4,9 +4,9 @@ var root;
 
 var scanned_files = [];
 var scanned_dirs = [];
-const IGNORE_DIRS = ["res://addons"];
+const IGNORE_DIRS = ["res://addons", "res://.git", "res://.idea", "res://.import"];
 const IGNORE_FILES = ["res://engine.cfg", "res://export.cfg"];
-const IGNORE_EXT = ["flags"];
+const IGNORE_EXT = ["flags", "import"];
 
 var dir;
 var process;
