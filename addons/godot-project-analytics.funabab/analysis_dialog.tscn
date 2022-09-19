@@ -5,17 +5,20 @@
 [ext_resource path="res://addons/godot-project-analytics.funabab/AnalysisTreeManager.gd" type="Script" id=3]
 
 [node name="analysis_dialog" type="AcceptDialog"]
-visible = true
 margin_right = 774.0
 margin_bottom = 619.0
+window_title = "Analytics report"
 script = ExtResource( 1 )
 
 [node name="tab_container" type="TabContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = -8.0
+margin_bottom = -43.0
 
 [node name="Basic Analysis" type="VBoxContainer" parent="tab_container"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -33,6 +36,7 @@ hide_root = true
 script = ExtResource( 2 )
 
 [node name="Asset Analysis" type="VBoxContainer" parent="tab_container"]
+visible = false
 size_flags_vertical = 3
 script = ExtResource( 3 )
 
