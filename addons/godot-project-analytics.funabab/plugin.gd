@@ -6,8 +6,7 @@ var pause_icon          = preload("res://addons/godot-project-analytics.funabab/
 var play_icon           = preload("res://addons/godot-project-analytics.funabab/play.png");
 var file_scanner        = preload("res://addons/godot-project-analytics.funabab/FileScanner.gd").new();
 var analysis_dialog     = preload("res://addons/godot-project-analytics.funabab/analysis_dialog.tscn").instance();
-var status_icon;
-var tool_button;
+var tool_button:Button
 var editor_tool_button;
 
 var settings = {
@@ -33,8 +32,8 @@ func _enter_tree():
 	tool_button = tool_button_control.get_child(0);
 	tool_button.connect("pressed", self, "_toggle_timer");
 	tool_button_control.get_node("analytic_button").connect("pressed", self, "_on_analytic_btn_pressed");
-	status_icon = tool_button.get_child(0);
-	get_base_control().add_child(analysis_dialog);
+
+	get_editor_interface().get_base_control().add_child(analysis_dialog);
 	editor_tool_button = add_control_to_bottom_panel(tool_button_control, TOOLBAR_BTN_TITLE);
 	if (!settings_manager.save_exists()):
 		settings.project_duration = OS.get_unix_time() - (OS.get_ticks_msec() / 1000);
@@ -65,26 +64,30 @@ func _start_file_scanning():
 		return;
 	file_scanner.start("res://");
 
-func _toogle_analytic_loading_dialog(value = null):
-	if (get_base_control().has_node(ANALYSIS_LOADING_DIALOG)):
-		var alert = get_base_control().get_node(ANALYSIS_LOADING_DIALOG);
-		if (value == null):
-			value = alert.is_visible();
-		alert.set_hidden(value);
+func _toogle_analytic_loading_dialog(hide = null):
+	var base_control = get_editor_interface().get_base_control()
+	if (base_control.has_node(ANALYSIS_LOADING_DIALOG)):
+		print("Base control has node " + ANALYSIS_LOADING_DIALOG)
+		var alert = base_control.get_node(ANALYSIS_LOADING_DIALOG);
+		if hide == null:
+			hide = alert.is_visible();
+		if hide:
+			alert.hide()
+		else:
+			alert.popup_centered()
 	else:
 		var alert = AcceptDialog.new();
 		alert.set_text("Running Analysis...");
 		alert.set_name(ANALYSIS_LOADING_DIALOG);
 		alert.set_title("Please wait...");
-		alert.set_pos(Vector2((get_base_control().get_viewport_rect().size.x - alert.get_rect().size.x) / 2, (get_base_control().get_viewport_rect().size.y - alert.get_rect().size.y)/2));
+		alert.set_position(Vector2((base_control.get_viewport_rect().size.x - alert.get_rect().size.x) / 2, (base_control.get_viewport_rect().size.y - alert.get_rect().size.y)/2));
 		alert.set_exclusive(true);
-		get_base_control().add_child(alert);
-		if (value != null && value == true):
-			get_base_control().get_node(ANALYSIS_LOADING_DIALOG).show();
+		base_control.add_child(alert);
+		alert.popup_centered()
 
 func _delete_analysis_loading_dialog():
-	if (get_base_control().has_node(ANALYSIS_LOADING_DIALOG)):
-		get_base_control().get_node(ANALYSIS_LOADING_DIALOG).queue_free();
+	if (get_editor_interface().get_base_control().has_node(ANALYSIS_LOADING_DIALOG)):
+		get_editor_interface().get_base_control().get_node(ANALYSIS_LOADING_DIALOG).queue_free();
 	pass
 
 func _on_analysis_completed(files_anaysis):
@@ -103,8 +106,7 @@ func _on_analysis_completed(files_anaysis):
 func _load_analysis_dialog():
 	_delete_analysis_loading_dialog();
 	analysis_dialog.setup(settings["project_analysis"]);
-	analysis_dialog.set_pos(Vector2((get_base_control().get_rect().size.x - analysis_dialog.get_rect().size.x) / 2, (get_base_control().get_rect().size.y - analysis_dialog.get_rect().size.y) / 2));
-	analysis_dialog.show();
+	analysis_dialog.popup_centered()
 	pass
 
 func _toggle_timer(value = null):
@@ -113,11 +115,11 @@ func _toggle_timer(value = null):
 		is_active = settings.timer_active;
 	if (is_active):
 		time_manager.update_timestamp();
-		status_icon.set_texture(play_icon);
+		tool_button.icon = play_icon
 		editor_tool_button.set_text("Timer: Not Running");
 	else:
 		time_manager.reset_prev_time();
-		status_icon.set_texture(pause_icon);
+		tool_button.icon = pause_icon
 		editor_tool_button.set_text(TOOLBAR_BTN_TITLE);
 	if (value == null):
 		settings.timer_active = !settings.timer_active;
@@ -128,7 +130,7 @@ func _exit_tree():
 		time_manager.update_timestamp();
 	settings.project_time_spent = time_manager.timestamp;
 	settings_manager.save_data();
-	get_base_control().get_node("analysis_dialog").queue_free();
+	get_editor_interface().get_base_control().get_node("analysis_dialog").queue_free();
 	remove_control_from_bottom_panel(tool_button_control);
 	pass
 
@@ -143,7 +145,7 @@ class SettingsManager:
 		var loadfile = File.new();
 		if (self.save_exists()):
 			loadfile.open("res://addons/godot-project-analytics.funabab/data.json", File.READ);
-			plugin.settings.parse_json(loadfile.get_as_text());
+			plugin.settings = parse_json(loadfile.get_as_text());
 			loadfile.close();
 		pass
 
@@ -157,6 +159,6 @@ class SettingsManager:
 	func save_data():
 		var savefile = File.new();
 		savefile.open("res://addons/godot-project-analytics.funabab/data.json", savefile.WRITE);
-		savefile.store_string(plugin.settings.to_json());
+		savefile.store_string(to_json(plugin.settings));
 		savefile.close();
 		pass
