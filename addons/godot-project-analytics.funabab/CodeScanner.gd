@@ -68,43 +68,43 @@ class CodeScanner:
 		var token = "";
 		##Strip non printable chars from the edges cause we wont be needing them
 		line = line.strip_edges();
-		var char;
+		var c;
 		var prev_char;
 		var braces = 0;
 		for i in range(line.length()):
 			##Get the next char
-			char = line.substr(i, 1);
-			if (char == "("):##If it a braces increase braces (Open braces)
+			c = line.substr(i, 1);
+			if (c == "("):##If it a braces increase braces (Open braces)
 				braces = braces + 1;
-			elif (char == ")"):
+			elif (c == ")"):
 				braces = braces - 1;
-				prev_char = char;
+				prev_char = c;
 				continue;
-			if (char == " " || braces != 0):
+			if (c == " " || braces != 0):
 				##A workaround to get the var token after the export keyword is to reset the token ahead if it an export token
 				if (token == TOK_EXPORT):
 					token = "";
-				prev_char = char;
+				prev_char = c;
 				continue;
 			##if it a non space char an braces are not open
 			else:
 				if (token.empty()):
 					##If it a token comment there is no point readin the rest
-					if (char == TOK_COMMENT):
+					if (c == TOK_COMMENT):
 						token = TOK_COMMENT;
 						break;
-					token = token + char; ##otherwise add char to token
+					token = token + c; ##otherwise add char to token
 				else:
 					##Check if we come across some end of token search chars
 					##If so, there is no point in continue reading...
-					if (prev_char == " " || IGNORE.has(char)):
+					if (prev_char == " " || IGNORE.has(c)):
 						break;
 					else:
-						if (char == TOK_COMMENT):##Also check for comment after a statment, like this one..
+						if (c == TOK_COMMENT):##Also check for comment after a statment, like this one..
 							break;
-						token = token + char;
+						token = token + c;
 					pass
-			prev_char = char;
+			prev_char = c;
 		return token;
 		pass
 	## this function count tabs

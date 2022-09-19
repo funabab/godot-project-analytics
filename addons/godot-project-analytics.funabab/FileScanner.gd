@@ -4,23 +4,25 @@ var root;
 
 var scanned_files = [];
 var scanned_dirs = [];
-const IGNORE_DIRS = ["res://addons"];
+const IGNORE_DIRS = ["res://addons", "res://.git", "res://.idea", "res://.import"];
 const IGNORE_FILES = ["res://engine.cfg", "res://export.cfg"];
-const IGNORE_EXT = ["flags"];
+const IGNORE_EXT = ["flags", "import"];
 
 var dir;
 var process;
 signal completed;
 var code_scanner = preload("res://addons/godot-project-analytics.funabab/CodeScanner.gd").CodeScanner.new();
 
+
 func _init():
 	dir = Directory.new();
-	self.process = Thread.new();
+	process = Thread.new();
 	pass
 
+
 func is_running():
-	return self.process.is_active();
-	pass
+	return process.is_active()
+
 
 func start(path):
 	if (is_running()):
@@ -39,8 +41,8 @@ func scan_path(path):
 			filename = dir.get_next();
 		if (filename == ""):
 			if (dir.get_current_dir() == path):
-				dir.list_dir_end();
-				result = analyse_files(scanned_files); ## finished scanning files 
+				dir.list_dir_end()
+				result = analyse_files(scanned_files) ## finished scanning files 
 				break;
 			else:
 				scanned_dirs.push_back(dir.get_current_dir());
@@ -56,11 +58,11 @@ func scan_path(path):
 				continue;
 			elif (!dir.current_is_dir()):
 				var filepath = dir.get_current_dir().plus_file(filename);
-				if (!scanned_files.has(filepath) && !IGNORE_FILES.has(filepath) && !IGNORE_EXT.has(filepath.extension())):
-					scanned_files.push_back(filepath);
+				if (!scanned_files.has(filepath) && !IGNORE_FILES.has(filepath) && !IGNORE_EXT.has(filepath.get_extension())):
+					scanned_files.push_back(filepath)
 	on_completed(result);
 	return result;
-	pass
+
 
 func analyse_files(scanned_files):
 	var result = {
@@ -73,7 +75,7 @@ func analyse_files(scanned_files):
 	var filesize;
 	var file = File.new();
 	for i in range(scanned_files.size()):
-		file_extension = scanned_files[i].extension();
+		file_extension = scanned_files[i].get_extension();
 		file_type_name = "_." + file_extension + " files";
 		if (file_extension == scanned_files[i]):
 			continue;
@@ -96,11 +98,10 @@ func analyse_files(scanned_files):
 					result["source code"][key] = 0;
 				result["source code"][key] += src_scan_result[key];
 	## format size properly
-	var file_types = result["file sizes"].keys();
+	var file_types = result["file sizes"].keys()
 	for type in file_types:
-		result["file sizes"][type] = get_file_size_text(result["file sizes"][type]);
-	return result;
-	pass
+		result["file sizes"][type] = get_file_size_text(result["file sizes"][type])
+	return result
 
 func get_file_size_text(byte_size):
 	if (byte_size >= 1073741824):
@@ -111,10 +112,7 @@ func get_file_size_text(byte_size):
 		return str(float(byte_size) / 1024.00).pad_decimals(2) + " KB";
 	else:
 		return str(byte_size) + " bytes";
-	pass
 
 func on_completed(result):
-	emit_signal("completed", result);
-	process.wait_to_finish();
-	pass
+	emit_signal("completed", result)
 

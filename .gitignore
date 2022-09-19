@@ -1,1 +1,20 @@
-/.project
+# Godot-specific ignores
+*.import
+export.cfg
+
+
+# Imported translations (automatically generated from CSV files)
+*.translation
+
+# Mono-specific ignores
+.mono/
+data_*/
+
+# Binaries
+bin/
+builds/
+lib/
+
+tests/results.xml
+
+.idea
