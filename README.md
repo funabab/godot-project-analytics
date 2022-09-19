@@ -1,13 +1,13 @@
-#Godot Project Analytics#
+# Godot Project Analytics #
 
 Well kinda...
 
-###What it does###
-It records your project lifetime (an duration), so you can know when you started and how long you have been working on a project.
+### What it does ###
+It records your project lifetime (and duration), so you can know when you started and how long you have been working on a project.
 
 ![Timer Screenshot](https://dl.dropboxusercontent.com/s/hyokijz06thbl5y/Screenshot%20from%202016-10-13%2000-56-14.png?dl=0)
 
-It also provides some basis analysis of your project like file sizes, file types, line of code etc.
+It also provides some basis analysis of your project like file sizes, file types, lines of code etc.
 
 ![Analysis Image](https://dl.dropboxusercontent.com/s/3m207prytlr0dwy/Screenshot%20from%202016-10-13%2000-57-44.png?dl=0)
 

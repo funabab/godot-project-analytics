@@ -1,73 +1,18 @@
-[gd_scene load_steps=4 format=1]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://addons/godot-project-analytics.funabab/timer.png" type="Texture" id=1]
-[ext_resource path="res://addons/godot-project-analytics.funabab/analytic.png" type="Texture" id=2]
 [ext_resource path="res://addons/godot-project-analytics.funabab/analytic.png" type="Texture" id=3]
-
-
-
-
 
 [node name="tool_button" type="HBoxContainer"]
 
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 0.0
-margin/top = 0.0
-margin/right = 378.0
-margin/bottom = 36.0
-alignment = 0
-
 [node name="button" type="Button" parent="."]
-
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 3
-size_flags/vertical = 2
-margin/left = 0.0
-margin/top = 0.0
-margin/right = 337.0
-margin/bottom = 36.0
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
+margin_right = 220.0
+margin_bottom = 38.0
 text = "Total project time: 00:00"
 icon = ExtResource( 1 )
-flat = false
-
-[node name="status_icon" type="TextureFrame" parent="button"]
-
-anchor/right = 1
-anchor/bottom = 1
-focus/ignore_mouse = true
-focus/stop_mouse = true
-size_flags/horizontal = 3
-size_flags/vertical = 2
-margin/left = 36.0
-margin/top = 2.0
-margin/right = 0.0
-margin/bottom = 0.0
-texture = ExtResource( 2 )
-stretch_mode = 0
 
 [node name="analytic_button" type="Button" parent="."]
-
-rect/min_size = Vector2( 36, 36 )
-hint/tooltip = "View complete analysis"
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 0
-size_flags/vertical = 0
-margin/left = 341.0
-margin/top = 0.0
-margin/right = 378.0
-margin/bottom = 36.0
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
+margin_left = 224.0
+margin_right = 265.0
+margin_bottom = 38.0
 icon = ExtResource( 3 )
-flat = false
-
-

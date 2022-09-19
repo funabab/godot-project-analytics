@@ -17,7 +17,7 @@ func _ready():
 	##self.set_column_title(1, "Value");
 	##self.set_column_expand(1, true);
 	##self.set_column_min_width(1, 214);
-	pass
+
 
 ## A simple function used to create a subsection
 func create_subsection(name, parent = null):
@@ -28,14 +28,14 @@ func create_subsection(name, parent = null):
 	subsection.set_selectable(0, false);
 	subsection.set_selectable(1, false);
 	return subsection;
-	pass
+
 
 ## A simple function used to create a Name/value
 func create_child_item(section, name, value):
 	var child_item = self.create_item(section);
 	child_item.set_text(0, name);
 	child_item.set_text(1, value);
-	pass
+
 
 ## A simple function to create TreeItem(s) from path
 ## Eg. hello/How are you/name,value
@@ -73,8 +73,6 @@ func create_item_from_path(path):
 				parent = get_tree_item(split[i], parent);
 			else:
 				parent = create_subsection(split[i], parent);
-		pass
-	pass
 
 ## A simple function that loops through a TreeItem to check
 ## if a particular TreeItem exist by it name
@@ -94,7 +92,6 @@ func get_tree_item(name, item):
 			return item;
 		else:
 			item = item.get_next();
-		pass
 	return null;
-	pass
+
 
