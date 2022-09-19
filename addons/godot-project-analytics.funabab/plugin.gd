@@ -58,7 +58,6 @@ func _on_analytic_btn_pressed():
 	pass
 
 func _start_file_scanning():
-	_delete_analysis_loading_dialog();
 	_toogle_analytic_loading_dialog();
 	if (file_scanner.is_running()):
 		return;
@@ -132,7 +131,7 @@ func _exit_tree():
 	settings_manager.save_data();
 	get_editor_interface().get_base_control().get_node("analysis_dialog").queue_free();
 	remove_control_from_bottom_panel(tool_button_control);
-	pass
+	tool_button_control.queue_free()
 
 class SettingsManager:
 	var plugin;

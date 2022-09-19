@@ -1,5 +1,5 @@
 
-extends Object
+extends Reference
 var root;
 
 var scanned_files = [];
@@ -9,26 +9,24 @@ const IGNORE_FILES = ["res://engine.cfg", "res://export.cfg"];
 const IGNORE_EXT = ["flags", "import"];
 
 var dir;
-var process;
+var process:Thread
 signal completed;
 var code_scanner = preload("res://addons/godot-project-analytics.funabab/CodeScanner.gd").CodeScanner.new();
 
 
 func _init():
 	dir = Directory.new();
-	process = Thread.new();
 	pass
 
 
 func is_running():
-	return process.is_active()
+	return process and process.is_alive()
 
 
 func start(path):
-	if (is_running()):
-		return;
-	process.start(self, "scan_path", path);
-	pass
+	process = Thread.new();
+	process.start(self, "scan_path", path)
+
 
 func scan_path(path):
 	dir.open(path);
@@ -115,4 +113,4 @@ func get_file_size_text(byte_size):
 
 func on_completed(result):
 	emit_signal("completed", result)
-
+	process.call_deferred('wait_to_finish')
